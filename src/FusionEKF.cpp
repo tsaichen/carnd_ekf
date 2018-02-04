@@ -80,7 +80,14 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       /**
       Convert radar from polar to cartesian coordinates and initialize state.
-      */
+      */  
+	  cout << "size = " << measurement_pack.raw_measurements_.size() << endl;
+	  cout << "meas0 = " << measurement_pack.raw_measurements_[0] << endl;
+	  cout << "meas1 = " << measurement_pack.raw_measurements_[1] << endl;
+	  cout << "meas2 = " << measurement_pack.raw_measurements_[2] << endl;
+	  cout << "cos = " << cos(measurement_pack.raw_measurements_[1]) << endl;
+
+	  
 	  ekf_.x_ << measurement_pack.raw_measurements_[0] * cos(measurement_pack.raw_measurements_[1]), measurement_pack.raw_measurements_[0] * sin(measurement_pack.raw_measurements_[1]), measurement_pack.raw_measurements_[2] * cos(measurement_pack.raw_measurements_[1]), measurement_pack.raw_measurements_[2] * sin(measurement_pack.raw_measurements_[1]);
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
