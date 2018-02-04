@@ -67,6 +67,7 @@ int main()
     	  iss >> sensor_type;
 
     	  if (sensor_type.compare("L") == 0) {
+			  std::cout << "LASER Sensor!!!" << std::endl;
       	  		meas_package.sensor_type_ = MeasurementPackage::LASER;
           		meas_package.raw_measurements_ = VectorXd(2);
           		float px;
@@ -77,6 +78,7 @@ int main()
           		iss >> timestamp;
           		meas_package.timestamp_ = timestamp;
           } else if (sensor_type.compare("R") == 0) {
+			  std::cout << "RADAR Sensor!!!" << std::endl;
 
       	  		meas_package.sensor_type_ = MeasurementPackage::RADAR;
           		meas_package.raw_measurements_ = VectorXd(3);
@@ -107,7 +109,7 @@ int main()
           
           //Call ProcessMeasurment(meas_package) for Kalman filter
     	  fusionEKF.ProcessMeasurement(meas_package);    	  
-			std::cout << "ProcessMeasurement!!!" << std::endl;
+			//std::cout << "ProcessMeasurement!!!" << std::endl;
 
     	  //Push the current estimated x,y positon from the Kalman filter's state vector
 
@@ -124,10 +126,10 @@ int main()
     	  estimate(3) = v2;
     	  
     	  estimations.push_back(estimate);
-						std::cout << "estimations!!!" << std::endl;
+						//std::cout << "estimations!!!" << std::endl;
 
     	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
-						std::cout << "CalculateRMSE!!!" << std::endl;
+						//std::cout << "CalculateRMSE!!!" << std::endl;
 
           json msgJson;						
 		  std::cout << "msgJson!!!" << std::endl;
@@ -138,7 +140,7 @@ int main()
           msgJson["rmse_y"] =  RMSE(1);
           msgJson["rmse_vx"] = RMSE(2);
           msgJson["rmse_vy"] = RMSE(3);
-          auto msg = "42[\"estimate_marker\"," + msgJson.dump() + "]";
+          //auto msg = "42[\"estimate_marker\"," + msgJson.dump() + "]";
           std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
 	  
