@@ -107,6 +107,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /*****************************************************************************
    *  Prediction
    ****************************************************************************/
+    cout << "Prediction: " << endl;
 
   /**
    TODO:
@@ -134,6 +135,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /*****************************************************************************
    *  Update
    ****************************************************************************/
+    cout << "Update: " << endl;
 
   /**
    TODO:
