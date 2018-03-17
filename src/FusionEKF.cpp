@@ -73,6 +73,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       * Remember: you'll need to convert radar from polar to cartesian coordinates.
     */
     // first measurement
+    cout << "Initialization: " << endl;
     cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
     ekf_.x_ << 1, 1, 1, 1;
@@ -119,11 +120,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	
     // TODO: YOUR CODE HERE
 	//1. Modify the F matrix so that the time is integrated
-	float noise_ax = 9;
+	float noise_ax = 9;	
 	float noise_ay = 9;
 	ekf_.F_(0,2) = dt;
 	ekf_.F_(1,3) = dt;
-    ekf_.Q_ = MatrixXd(4,4);
+    ekf_.Q_ = MatrixXd(4,4);f
   	ekf_.Q_ << dt * dt * dt * dt/ 4 * noise_ax , 0, dt * dt * dt / 2 * noise_ax , 0,
 	            0, dt * dt * dt * dt/4 * noise_ay, 0, dt * dt * dt / 2*noise_ay,
 	            dt * dt * dt / 2 * noise_ax, 0, dt * dt * noise_ax, 0,
