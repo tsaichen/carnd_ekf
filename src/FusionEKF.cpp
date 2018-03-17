@@ -124,7 +124,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	float noise_ay = 9;
 	ekf_.F_(0,2) = dt;
 	ekf_.F_(1,3) = dt;
-    ekf_.Q_ = MatrixXd(4,4);f
+    ekf_.Q_ = MatrixXd(4,4);
   	ekf_.Q_ << dt * dt * dt * dt/ 4 * noise_ax , 0, dt * dt * dt / 2 * noise_ax , 0,
 	            0, dt * dt * dt * dt/4 * noise_ay, 0, dt * dt * dt / 2*noise_ay,
 	            dt * dt * dt / 2 * noise_ax, 0, dt * dt * noise_ax, 0,
