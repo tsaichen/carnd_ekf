@@ -49,9 +49,9 @@ void KalmanFilter::Update(const VectorXd &z) {
   VectorXd y = z - z_pred;
   cout << "P_: " << P_ << endl;
   cout << "y: " << y << endl;
-  cout << " Ht: " <<  Ht << endl;
   cout << " R_: " <<  R_ << endl;
   MatrixXd Ht = H_.transpose();
+  cout << " Ht: " <<  Ht << endl;
   MatrixXd S = H_ * P_ * Ht + R_;
   cout << " S: " <<  S << endl;
   MatrixXd Si = S.inverse();
