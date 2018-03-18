@@ -38,16 +38,28 @@ void KalmanFilter::Update(const VectorXd &z) {
   TODO:
     * update the state by using Kalman Filter equations
   */
-  
+  cout << "x_: " << x_ << endl;
+  cout << "H_: " << H_ << endl;
+
   VectorXd z_pred = H_ * x_;
-  
+  cout << "z_pred: " << z_pred << endl;
+  cout << "z: " << z << endl;
+
+	
   VectorXd y = z - z_pred;
-  
+  cout << "P_: " << P_ << endl;
+  cout << "y: " << y << endl;
+  cout << " Ht: " <<  Ht << endl;
+  cout << " R_: " <<  R_ << endl;
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
+  cout << " S: " <<  S << endl;
   MatrixXd Si = S.inverse();
+  cout << " Si: " <<  Si << endl;
   MatrixXd PHt = P_ * Ht;
+  cout << " PHt: " <<  PHt << endl;
   MatrixXd K = PHt * Si;
+  cout << " K: " <<  K << endl;
   
   //new state eq
   x_ = x_ + K*y;
@@ -81,7 +93,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   MatrixXd Ht = H_.transpose();
   cout << "Ht = " << Ht << endl;
   cout << "P_ = " << P_ << endl;
-  cout << "R_ = " << R_ << endl;
+  cout << "R_ = " << R_y << endl;
   MatrixXd S = H_ * P_ * Ht + R_;
   cout << "S = " << S << endl;
   MatrixXd Si = S.inverse();
