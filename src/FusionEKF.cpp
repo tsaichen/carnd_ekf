@@ -48,7 +48,7 @@ FusionEKF::FusionEKF() {
 		0, 0, 1000, 0,
 		0, 0, 0, 1000;
   ekf_.H_ = MatrixXd(2,4);
-  ekf_.H_ << 1, 0, 0, 0,
+  H_laser << 1, 0, 0, 0,
 			 0, 1, 0, 0;
   
   
@@ -157,6 +157,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     //ekf_.UpdateEKF(measurement_pack.raw_measurements_);
   } else {
     // Laser updates
+	ekf_.H_ = H_laser;
     ekf_.R_  = R_laser_;
     ekf_.Update(measurement_pack.raw_measurements_);
 
