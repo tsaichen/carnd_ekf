@@ -71,11 +71,17 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   } else {
     rho_dot = (x_(0)*x_(2) + x_(1)*x_(3))/rho;
   }
+  cout << "rho = " << rho << endl;
+  cout << "phi = " << phi << endl;
+  cout << "rho_dot = " << rho_dot << endl;
   VectorXd z_pred(3);
   z_pred << rho, phi, rho_dot;
   VectorXd y = z - z_pred;
+  cout << "y = " << y << endl;
   MatrixXd Ht = H_.transpose();
+  cout << "Ht = " << Ht << endl;
   MatrixXd S = H_ * P_ * Ht + R_;
+  cout << "S = " << S << endl;
   MatrixXd Si = S.inverse();
   MatrixXd PHt = P_ * Ht;
   MatrixXd K = PHt * Si;
