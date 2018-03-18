@@ -59,8 +59,14 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   if (px == 0  && py ==0){
 	  return Hj;
   }
-  Hj << px/px_py_rms, py/px_py_rms,0,0,
-	    -py/(px_py_rms*px_py_rms), px/(px_py_rms*px_py_rms),0,0,
-	    py*(vx*py-vy*px)/(px_py_rms*px_py_rms*px_py_rms),px*(vy*px-vx*py)/(px_py_rms*px_py_rms*px_py_rms),px/px_py_rms, py/px_py_rms;
+  float rho = sqrt( px*px + py* py );
+  float rho2 = rho*rho;
+  float rho3 = rho2*rho;
+  Hj <<                 px/rho,                    py/rho,      0,      0,
+                      -py/rho2,                   px/rho2,      0,      0,
+     py*( vx*py - vy*px )/rho3, px*( vy*px - vx*py )/rho3, px/rho, py/rho;
+//Hj << px/px_py_rms, py/px_py_rms,0,0,
+//    -py/(px_py_rms*px_py_rms), px/(px_py_rms*px_py_rms),0,0,
+//    py*(vx*py-vy*px)/(px_py_rms*px_py_rms*px_py_rms),px*(vy*px-vx*py)/(px_py_rms*px_py_rms*px_py_rms),px/px_py_rms, py/px_py_rms;
   return Hj;
 }
