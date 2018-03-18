@@ -89,8 +89,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	  cout << "meas2 = " << measurement_pack.raw_measurements_[2] << endl;
 	  cout << "cos = " << cos(measurement_pack.raw_measurements_[1]) << endl;
 
-	  
-	  ekf_.x_ << measurement_pack.raw_measurements_[0] * cos(measurement_pack.raw_measurements_[1]), measurement_pack.raw_measurements_[0] * sin(measurement_pack.raw_measurements_[1]), measurement_pack.raw_measurements_[2] * cos(measurement_pack.raw_measurements_[1]), measurement_pack.raw_measurements_[2] * sin(measurement_pack.raw_measurements_[1]);
+	  float rho = measurement_pack.raw_measurements_[0];
+      float phi = measurement_pack.raw_measurements_[1];
+      ekf_.x_ << rho*cos(phi), rho*sin(phi), 0.f, 0.f;
+	  //ekf_.x_ << measurement_pack.raw_measurements_[0] * cos(measurement_pack.raw_measurements_[1]), measurement_pack.raw_measurements_[0] * sin(measurement_pack.raw_measurements_[1]), measurement_pack.raw_measurements_[2] * cos(measurement_pack.raw_measurements_[1]), measurement_pack.raw_measurements_[2] * sin(measurement_pack.raw_measurements_[1]);
 
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
@@ -123,18 +125,20 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 	
     // TODO: YOUR CODE HERE
 	//1. Modify the F matrix so that the time is integrated
-	float noise_ax = 9;	
-	float noise_ay = 9;
-	ekf_.F_(0,2) = dt;
-	ekf_.F_(1,3) = dt;
-    ekf_.Q_ = MatrixXd(4,4);
-  	ekf_.Q_ << dt * dt * dt * dt/ 4 * noise_ax , 0, dt * dt * dt / 2 * noise_ax , 0,
-	            0, dt * dt * dt * dt/4 * noise_ay, 0, dt * dt * dt / 2*noise_ay,
-	            dt * dt * dt / 2 * noise_ax, 0, dt * dt * noise_ax, 0,
-	        0, dt*dt*dt/2*noise_ay,0, dt*dt*noise_ay;
-			
-	
-  ekf_.Predict();
+	if (dt > 0.000001) {
+		float noise_ax = 9;	
+		float noise_ay = 9;
+		ekf_.F_(0,2) = dt;
+		ekf_.F_(1,3) = dt;
+		ekf_.Q_ = MatrixXd(4,4);
+		ekf_.Q_ << dt * dt * dt * dt/ 4 * noise_ax , 0, dt * dt * dt / 2 * noise_ax , 0,
+					0, dt * dt * dt * dt/4 * noise_ay, 0, dt * dt * dt / 2*noise_ay,
+					dt * dt * dt / 2 * noise_ax, 0, dt * dt * noise_ax, 0,
+				0, dt*dt*dt/2*noise_ay,0, dt*dt*noise_ay;
+				
+		
+		ekf_.Predict();
+	}
 
   /*****************************************************************************
    *  Update
